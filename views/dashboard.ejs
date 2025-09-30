@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Dashboard</title>
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+<body>
+    <div class="header">
+        <h1>ยินดีต้อนรับ, <%= username %>!</h1>
+        <a href="/logout" class="logout-btn">ออกจากระบบ</a>
+    </div>
+
+    <div class="container">
+        <h2>แก้ไขคำตอบ</h2>
+        
+        <form action="/filter" method="POST" class="filter-form">
+            <label for="type-select">เลือกประเภท:</label>
+            <select name="type" id="type-select" onchange="this.form.submit()">
+                <option value="" <%= selectedType === null ? 'selected' : '' %>>ทั้งหมด</option>
+                <% types.forEach(type => { %>
+                    <option value="<%= type.type %>" <%= selectedType === type.type ? 'selected' : '' %>><%= type.type %></option>
+                <% }); %>
+            </select>
+        </form>
+
+        <table class="data-table">
+            <thead>
+                <tr>
+                    <th>Type</th>
+                    <th>Question</th>
+                    <th>Answer</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                <% questions.forEach(q => { %>
+                    <tr>
+                        <td><%= q.type %></td>
+                        <td><%= q.question %></td>
+                        <td>
+                            <form action="/update" method="POST" class="update-form">
+                                <input type="hidden" name="question" value="<%= q.question %>">
+                                <input type="hidden" name="type" value="<%= q.type %>">
+                                <input type="text" name="answer" value="<%= q.answer %>" class="editable-answer">
+                        </td>
+                        <td>
+                                <button type="submit">บันทึก</button>
+                            </form>
+                        </td>
+                    </tr>
+                <% }); %>
+            </tbody>
+        </table>
+    </div>
+</body>
+</html>
